@@ -263,11 +263,29 @@ img
 
 .ingredient-bubble
 {
-    display: inline-flex;
+    display: inline-block;
     align-items: center;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin: 5px;
     font-size: 14px;
-    border: 1px solid #ddd;
-    background-color: #f8f9fa;
+    background-color: dimgrey;
+}
+
+.ingredient-bubble
+{
+    margin-left: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.remove-ingredient
+{
+    cursor: pointer;
+    pointer-events: auto;
+    color: white;
+    margin-left: 8px;
 }
 
 #suggestions
@@ -296,3 +314,10 @@ img
     z-index: 10;
     position: relative;
 }
+
+#selected-ingredients
+{
+    position: relative;
+    z-index: 10;
+}
+
