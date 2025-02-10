@@ -4,5 +4,21 @@
 
 {% block content %}
     <!-- Enter code here -->
-    
+    <div class="container mt-5 recipe-results">
+        <h1 class="mb-4">Recipe Results</h1>
+        <p>Showing results for ingredients: <strong>{{ ingredients }}</strong></p>
+        <div class="row">
+            {% for recipe in recipes %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ recipe.title }}</h5>
+                            <p class="card-text">Used Ingredients: {{ recipe.usedIngredientCount }} | Missed: {{ recipe.missedIngredientCount }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

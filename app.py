@@ -1,35 +1,51 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import requests
 
 # Configure Application
 app = Flask(__name__)
 
+# API Key for Spoonacular
+SPOONACULAR_API_KEY = "b7d6f7bf16ab4deb8ea6120e727c3f6f"
 
 @app.route('/')
 @app.route('/home')
 def home():
     return render_template('index.html')
 
-
 @app.route('/search_with_ingredients')
 def search_with_ingredients():
     return render_template('search_with_ingredients.html')
-
 
 @app.route('/search_nutrition')
 def search_nutrition():
     return render_template('search_with_nutrition.html')
 
-
-@app.route('/search_ingredients', methods=['POST'])   
-def search_ingredients():
-    return render_template('search_with_ingredients.html')
-
-
 @app.route('/meal_planner')
 def meal_planner():
     return render_template('meal_planner.html')
 
+# ✅ Keep only ONE function for '/search_ingredients'
+@app.route('/search_ingredients', methods=['POST'])
+def search_ingredients():
+    ingredients = request.form.get("ingredients")  # Get ingredients from the hidden input
+    if not ingredients:
+        return redirect(url_for("search_with_ingredients"))  # If empty, return to form
+
+    return redirect(url_for("search_results", ingredients=ingredients))
+
+# Route to fetch and display search results
+@app.route('/search-results')
+def search_results():
+    ingredients = request.args.get("ingredients")
+    if not ingredients:
+        return redirect(url_for("search_with_ingredients"))  # If no ingredients, go back
+
+    # Fetch recipes from Spoonacular
+    url = f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={ingredients}&number=5&apiKey={SPOONACULAR_API_KEY}"
+    response = requests.get(url)
+    recipes = response.json()
+
+    return render_template("search_results.html", recipes=recipes, ingredients=ingredients)
 
 if __name__ == "__main__":
     app.run(debug=True)

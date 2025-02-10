@@ -195,7 +195,7 @@ main
 
 .card
 {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.2) !important; 
 }
@@ -290,21 +290,22 @@ img
 
 #suggestions
 {
+    position: absolute;
+    background: white;
     border: 1px solid #ccc;
-    border-radius: 0.25rem;
-    background-color: white;
-    max-height: 150px;
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px;
     overflow-y: auto;
-    display: none;
-    z-index: 1000;
+    width: 100%;
 }
 
-#suggestions .list-group-item 
+.list-group-item 
 {
     cursor: pointer;
 }
 
-#suggestions .list-group-item:hover 
+.list-group-item:hover 
 {
     background-color: #f8f9fa;
 }
@@ -321,3 +322,7 @@ img
     z-index: 10;
 }
 
+.recipe-results
+{
+    padding-top: 70px;
+}

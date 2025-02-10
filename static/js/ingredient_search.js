@@ -1,6 +1,7 @@
 const ingredientInput = document.getElementById("ingredient-input");
 const suggestionsList = document.getElementById("suggestions");
 const selectedIngredientsContainer = document.getElementById("selected-ingredients");
+const hiddenIngredientsInput = document.getElementById("hidden-ingredients");
 let selectedIngredients = [];
 
 // Fetch suggestions from Spoonacular API
@@ -53,6 +54,7 @@ const addIngredient = (ingredient) => {
     }
 
     selectedIngredients.push(ingredient);
+    updateHiddenInput();  // Update hidden input field
 
     const bubble = document.createElement("span");
     bubble.className = "ingredient-bubble badge bg-success text-white me-2 p-2";
@@ -62,21 +64,18 @@ const addIngredient = (ingredient) => {
     ingredientInput.value = "";
 };
 
+// Update the hidden input field with selected ingredients
+const updateHiddenInput = () => {
+    hiddenIngredientsInput.value = selectedIngredients.join(",");
+};
+
 // Handle removing ingredients via event delegation
 selectedIngredientsContainer.addEventListener("click", function (event) {
     if (event.target.classList.contains("remove-ingredient")) {
         const ingredient = event.target.parentElement.textContent.trim().slice(0, -2);
         selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
+        updateHiddenInput();  // Update hidden input field
         event.target.parentElement.remove();
-    }
-});
-
-// Prevent form submission when pressing Enter
-document.getElementById("ingredient-search-form").addEventListener("submit", function (event) {
-    event.preventDefault();
-    const ingredient = ingredientInput.value.trim();
-    if (ingredient) {
-        addIngredient(ingredient);
     }
 });
 

@@ -19,26 +19,27 @@
     <section class="search-ingredients" style="margin-bottom: 100px;">
         <div class="container mt-5">
             <div class="position-relative">
-                <form id="ingredient-search-form" class="d-flex align-items-center mt-4">
-                    <!--Search Input-->
+                <!-- Use POST to send selected ingredients -->
+                <form action="/search_ingredients" method="POST" id="ingredient-search-form" class="d-flex align-items-center mt-4">
+                    <!-- Search Input -->
                     <input type="text" id="ingredient-input" class="form-control me-2" placeholder="Enter an Ingredient" autocomplete="off">
-                    <!--Submit Button-->
+                    
+                    <!-- Hidden input to store selected ingredients as a comma-separated string -->
+                    <input type="hidden" name="ingredients" id="hidden-ingredients">
+                    
+                    <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary">Search</button>
                 </form>
-                <!--Ingredient search suggestions-->
+    
+                <!-- Ingredient search suggestions -->
                 <ul id="suggestions" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></ul>
             </div>
-            <!--Placeholder for Ingredient bubbles-->
+    
+            <!-- Placeholder for ingredient bubbles -->
             <div id="selected-ingredients" class="mt-3 d-flex flex-wrap"></div>
         </div>
-        <!--Bootstrap Bundle with JavaScript-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-        <!--My Custom Javascript-->
-        <script src="{{ url_for('static', filename='js/ingredient_search.js') }}"></script>
-
-    </section>        
-{% endblock %}
+    </section>
+{% endblock %}  <!-- Missing endblock for content -->
 
 {% block scripts %}
-<script src="{{url_for('static', filename='js/script.js') }}"></script>
-{% endblock %}
+{% endblock %}  <!-- Missing endblock for scripts -->
