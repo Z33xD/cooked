@@ -12,7 +12,7 @@ const fetchSuggestions = async (query) => {
     }
 
     try {
-        const apiKey = "b7d6f7bf16ab4deb8ea6120e727c3f6f";
+        const apiKey = "97188f224df9474d8f99adb82cf9c8dd";
         const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${query}&number=5&apiKey=${apiKey}`);
         const suggestions = await response.json();
         displaySuggestions(suggestions);

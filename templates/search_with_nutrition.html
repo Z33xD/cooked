@@ -4,5 +4,71 @@
 
 {% block content %}
     <!-- Enter code here -->
-     
-{% endblock %}
+    <section class="subpage-header">
+        <div class="container">
+            <!-- Header title and text -->
+            <div class="row">
+                <div class="col-12 text-left">
+                    <h3 class="page-title"><strong>Discover recipes based on your dietary preferences</strong></h3>
+                    <h5 class="page-text">Set your specified nutritional values, and we'll suggest recipes according to that.</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="search-ingredients" style="margin-bottom: 100px;">
+        <div class="container mt-5">
+            <div class="position-relative">
+                <!-- Use POST to send selected ingredients -->
+                <form action="/search_nutrition" method="POST" id="nutrition-search-form" class="mt-4">
+                    <!-- Calories -->
+                    <div class="nutrition-group">
+                        <label class="nutrition-label">
+                            <input type="checkbox" id="calories_enabled"> <strong class="white-text">Calories</strong>
+                        </label>
+                        <input type="range" id="calories" name="calories" min="0" max="1000" step="10" value="500" disabled>
+                        <span id="calories_value">out of 1000g</span>
+                    </div>
+                
+                    <!-- Protein -->
+                    <div class="nutrition-group">
+                        <label class="nutrition-label">
+                            <input type="checkbox" id="protein_enabled"> <strong class="white-text">Protein</strong>
+                        </label>
+                        <input type="range" id="protein" name="protein" min="0" max="100" step="1" value="50" disabled>
+                        <span id="protein_value">out of 100g</span>
+                    </div>
+                
+                    <!-- Fat -->
+                    <div class="nutrition-group">
+                        <label class="nutrition-label">
+                            <input type="checkbox" id="fat_enabled"> <strong class="white-text">Fats</strong>
+                        </label>
+                        <input type="range" id="fat" name="fat" min="0" max="100" step="1" value="50" disabled>
+                        <span id="fat_value">out of 100g</span>
+                    </div>
+                
+                    <!-- Carbs -->
+                    <div class="nutrition-group">
+                        <label class="nutrition-label">
+                            <input type="checkbox" id="carbs_enabled"> <strong class="white-text">Carbs</strong>
+                        </label>
+                        <input type="range" id="carbs" name="carbs" min="0" max="100" step="1" value="50" disabled>
+                        <span id="carbs_value">out of 100g</span>
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary mt-3">Search</button>                
+                </form>
+
+                <!-- Ingredient search suggestions -->
+                <ul id="suggestions" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></ul>
+            </div>
+    
+            <!-- Placeholder for ingredient bubbles -->
+            <div id="selected-ingredients" class="mt-3 d-flex flex-wrap"></div>
+        </div>
+    </section>
+{% endblock %}  <!-- Missing endblock for content -->
+
+{% block scripts %}
+{% endblock %}  <!-- Missing endblock for scripts -->

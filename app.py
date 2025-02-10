@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 
 # API Key for Spoonacular
-SPOONACULAR_API_KEY = "b7d6f7bf16ab4deb8ea6120e727c3f6f"
+SPOONACULAR_API_KEY = "97188f224df9474d8f99adb82cf9c8dd"
 
 @app.route('/')
 @app.route('/home')
@@ -15,10 +15,6 @@ def home():
 @app.route('/search_with_ingredients')
 def search_with_ingredients():
     return render_template('search_with_ingredients.html')
-
-@app.route('/search_nutrition')
-def search_nutrition():
-    return render_template('search_with_nutrition.html')
 
 @app.route('/meal_planner')
 def meal_planner():
@@ -52,6 +48,33 @@ def search_ingredients():
         })
 
     return render_template("search_results.html", recipes=processed_recipes)
+
+@app.route('/search_nutrition', methods=['GET', 'POST'])
+def search_nutrition():
+    if request.method == 'POST':
+        # Extract user-selected filters
+        nutrition_filters = {}
+        if "calories" in request.form: nutrition_filters["maxCalories"] = request.form["calories"]
+        if "protein" in request.form: nutrition_filters["maxProtein"] = request.form["protein"]
+        if "fat" in request.form: nutrition_filters["maxFat"] = request.form["fat"]
+        if "carbs" in request.form: nutrition_filters["maxCarbs"] = request.form["carbs"]
+
+        # Spoonacular API Endpoint
+        url = "https://api.spoonacular.com/recipes/findByNutrients"
+        
+        # Add API Key
+        nutrition_filters["apiKey"] = SPOONACULAR_API_KEY
+        
+        # Send request to Spoonacular
+        response = requests.get(url, params=nutrition_filters)
+        data = response.json()  # Parse JSON response
+
+        # Debugging: Print API response
+        print("Spoonacular Response:", data)
+
+        return render_template("search_results.html", recipes=data)
+    # If GET request, render the search page
+    return render_template("search_with_nutrition.html")
 
 # Route to fetch and display search results
 @app.route('/search-results')

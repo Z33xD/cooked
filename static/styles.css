@@ -351,3 +351,49 @@ img
     padding: 20px;
     font-weight: 750; 
 }
+
+input[type="range"] 
+{
+    width: 100%;
+    accent-color: #007bff;
+}
+
+input[type="range"]:disabled {
+    opacity: 0.5;
+    pointer-events: none; /* to block interaction */
+}
+
+input[type="checkbox"]
+{
+    transform: scale(1.2);
+}
+
+.nutrition-group
+{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.nutrition-label
+{
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+span
+{
+    font-weight: bold;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.white-text
+{
+    color: white !important;
+}

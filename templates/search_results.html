@@ -5,7 +5,7 @@
 {% block content %}
     <section class="container mt-5">
         <h3 class="recipe-results-header">Recipe Results</h3>
-        
+
         <div class="row">
             {% for recipe in recipes %}
             <div class="col-md-4">
@@ -13,28 +13,44 @@
                     <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ recipe.title }}</h5>
-                        <p style="color: white;"><strong>Matched Ingredients:</strong> 
-                            {% if recipe.matched_ingredients and recipe.matched_ingredients[0] != "None" %}
-                                {% for ingredient in recipe.matched_ingredients %}
-                                    <span class="badge bg-success">{{ ingredient }}</span>
-                                {% endfor %}
-                            {% else %}
-                                <span class="text-muted">None</span>
-                            {% endif %}
-                        </p>
-                        <p style="color: white;"><strong>Missing Ingredients:</strong> 
-                            {% if recipe.missing_ingredients and recipe.missing_ingredients[0] != "None" %}
-                                {% for ingredient in recipe.missing_ingredients %}
-                                    <span class="badge bg-danger">{{ ingredient }}</span>
-                                {% endfor %}
-                            {% else %}
-                                <span class="text-muted">None</span>
-                            {% endif %}
-                        </p>
+
+                        <!-- Searching with Ingredients -->
+                        {% if recipe.matched_ingredients is defined or recipe.missing_ingredients is defined %}
+                            <p style="color: white;"><strong>Matched Ingredients:</strong> 
+                                {% if recipe.matched_ingredients and recipe.matched_ingredients[0] != "None" %}
+                                    {% for ingredient in recipe.matched_ingredients %}
+                                        <span class="badge bg-success">{{ ingredient }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">None</span>
+                                {% endif %}
+                            </p>
+                            <p style="color: white;"><strong>Missing Ingredients:</strong> 
+                                {% if recipe.missing_ingredients and recipe.missing_ingredients[0] != "None" %}
+                                    {% for ingredient in recipe.missing_ingredients %}
+                                        <span class="badge bg-danger">{{ ingredient }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">None</span>
+                                {% endif %}
+                            </p>
+                        {% endif %}
+
+                        <!-- Searching with Nutrition -->
+                        {% if recipe.calories is defined or recipe.protein is defined or recipe.fat is defined or recipe.carbs is defined %}
+                            <p style="color: white;"><strong>Nutrition Info:</strong></p>
+                            <ul style="color: white;">
+                                {% if recipe.calories is defined %}<li>Calories: {{ recipe.calories }} kcal</li>{% endif %}
+                                {% if recipe.protein is defined %}<li>Protein: {{ recipe.protein }}</li>{% endif %}
+                                {% if recipe.fat is defined %}<li>Fat: {{ recipe.fat }}</li>{% endif %}
+                                {% if recipe.carbs is defined %}<li>Carbs: {{ recipe.carbs }}</li>{% endif %}
+                            </ul>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
-        {% endfor %}        
+            {% endfor %}
         </div>
     </section>
 {% endblock %}
