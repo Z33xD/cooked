@@ -1,24 +1,40 @@
 {% extends "layout.html" %}
 
-{% block title %}Search Results{% endblock %}
+{% block title %}Recipe Results{% endblock %}
 
 {% block content %}
-    <!-- Enter code here -->
-    <div class="container mt-5 recipe-results">
-        <h1 class="mb-4">Recipe Results</h1>
-        <p>Showing results for ingredients: <strong>{{ ingredients }}</strong></p>
+    <section class="container mt-5">
+        <h3 class="recipe-results-header">Recipe Results</h3>
+        
         <div class="row">
             {% for recipe in recipes %}
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ recipe.title }}</h5>
-                            <p class="card-text">Used Ingredients: {{ recipe.usedIngredientCount }} | Missed: {{ recipe.missedIngredientCount }}</p>
-                        </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p style="color: white;"><strong>Matched Ingredients:</strong> 
+                            {% if recipe.matched_ingredients and recipe.matched_ingredients[0] != "None" %}
+                                {% for ingredient in recipe.matched_ingredients %}
+                                    <span class="badge bg-success">{{ ingredient }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </p>
+                        <p style="color: white;"><strong>Missing Ingredients:</strong> 
+                            {% if recipe.missing_ingredients and recipe.missing_ingredients[0] != "None" %}
+                                {% for ingredient in recipe.missing_ingredients %}
+                                    <span class="badge bg-danger">{{ ingredient }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">None</span>
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
+        {% endfor %}        
         </div>
-    </div>
+    </section>
 {% endblock %}

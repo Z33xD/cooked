@@ -326,3 +326,28 @@ img
 {
     padding-top: 70px;
 }
+
+.badge.bg-success 
+{
+    background-color: #28a745;
+    color: white;
+}
+
+.badge.bg.danger
+{
+    background-color: #dc3545;
+    color: white;
+}
+
+.white-text
+{
+    color: white
+}
+
+.recipe-results-header
+{
+    color: black;
+    margin-top: 70px; 
+    padding: 20px;
+    font-weight: 750; 
+}
