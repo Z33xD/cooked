@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-import json
-import requests
 import os
+import requests
+from flask import Flask, request, jsonify, render_template, url_for, redirect
 
 
 # Configure Application
@@ -9,7 +8,9 @@ app = Flask(__name__)
 
 
 # API Key for Spoonacular
-SPOONACULAR_API_KEY = "b7d6f7bf16ab4deb8ea6120e727c3f6f"
+SPOONACULAR_API_KEY = os.getenv("SPOONACULAR_API_KEY")
+if not SPOONACULAR_API_KEY:
+    raise ValueError("❌ ERROR: Spoonacular API key is missing! Set SPOONACULAR_API_KEY as an environment variable.")
 
 
 @app.route('/')
@@ -25,36 +26,20 @@ def search_with_ingredients():
 
 @app.route('/search_ingredients', methods=['POST'])
 def search_ingredients():
-    user_ingredients = request.form.get("ingredients")  # Get ingredients from the hidden input
+    user_ingredients = request.form.get("ingredients")  
     user_ingredient_list = [ing.strip().lower() for ing in user_ingredients.split(",")]
 
-    # Fetch recipes from Spoonacular
-    response = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={user_ingredients}&number=5&apiKey={SPOONACULAR_API_KEY}")
+    response = requests.get(
+        "https://api.spoonacular.com/recipes/findByIngredients",
+        params={"ingredients": user_ingredients, "number": 5, "apiKey": SPOONACULAR_API_KEY},
+    )
 
     if response.status_code != 200:
-        return jsonify({"error": "Failed to fetch recipes"}), 500
+        return jsonify({"error": f"Failed to fetch recipes: {response.text}"}), response.status_code
 
     recipes = response.json()
 
-    processed_recipes = []
-    for recipe in recipes:
-        matched = [ing["name"].capitalize() for ing in recipe.get("usedIngredients", [])]  # Capitalize for better display
-        missing = [ing["name"].capitalize() for ing in recipe.get("missedIngredients", [])]
-
-        processed_recipes.append({
-            "title": recipe["title"],
-            "image": recipe["image"],
-            "matched_ingredients": matched if matched else None,
-            "missing_ingredients": missing if missing else None
-        })
-
-        # Debugging
-        print(f"Recipe: {recipe['title']}")
-        print(f"Matched Ingredients: {matched}")
-        print(f"Missing Ingredients: {missing}")
-
-    return render_template("search_results.html", recipes=processed_recipes)
-
+    return render_template("search_results.html", recipes=recipes)
 
 # Function to fetch recipes based on user-selected nutrition filters
 def get_recipes_based_on_nutrition(filters):
@@ -120,6 +105,12 @@ def search_results():
     recipes = response.json()
 
     return render_template("search_results.html", recipes=recipes, ingredients=ingredients)
+
+
+@app.route('/get_api_key')
+def get_api_key():
+    return jsonify({"apiKey": os.getenv("SPOONACULAR_API_KEY")})
+
 
 
 if __name__ == "__main__":

@@ -3,17 +3,33 @@ const suggestionsList = document.getElementById("suggestions");
 const selectedIngredientsContainer = document.getElementById("selected-ingredients");
 const hiddenIngredientsInput = document.getElementById("hidden-ingredients");
 let selectedIngredients = [];
+let SPOONACULAR_API_KEY = ""; // Will be fetched dynamically
 
-// Fetch suggestions from Spoonacular API
+// Fetch the API key from the backend
+const fetchApiKey = async () => {
+    try {
+        const response = await fetch("/get_api_key");
+        const data = await response.json();
+        SPOONACULAR_API_KEY = data.apiKey;
+    } catch (error) {
+        console.error("Error fetching API key: ", error);
+    }
+};
+
+// Fetch ingredient suggestions from Spoonacular API
 const fetchSuggestions = async (query) => {
     if (query.trim() === "") {
         suggestionsList.style.display = "none";
         return;
     }
 
+    if (!SPOONACULAR_API_KEY) {
+        console.error("API key is missing!");
+        return;
+    }
+
     try {
-        const apiKey = "b7d6f7bf16ab4deb8ea6120e727c3f6f";
-        const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${query}&number=5&apiKey=${apiKey}`);
+        const response = await fetch(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${query}&number=5&apiKey=${SPOONACULAR_API_KEY}`);
         const suggestions = await response.json();
         displaySuggestions(suggestions);
     } catch (error) {
@@ -54,7 +70,7 @@ const addIngredient = (ingredient) => {
     }
 
     selectedIngredients.push(ingredient);
-    updateHiddenInput();  // Update hidden input field
+    updateHiddenInput();
 
     const bubble = document.createElement("span");
     bubble.className = "ingredient-bubble badge bg-success text-white me-2 p-2";
@@ -74,10 +90,13 @@ selectedIngredientsContainer.addEventListener("click", function (event) {
     if (event.target.classList.contains("remove-ingredient")) {
         const ingredient = event.target.parentElement.textContent.trim().slice(0, -2);
         selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
-        updateHiddenInput();  // Update hidden input field
+        updateHiddenInput();
         event.target.parentElement.remove();
     }
 });
+
+// Fetch API key when the page loads
+fetchApiKey();
 
 // Fetch suggestions as user types
 ingredientInput.addEventListener("input", (event) => {
