@@ -1,0 +1,10 @@
+# cooked
+#### Video Demo:  [cooked Showcase](https://www.youtube.com/watch?v=5hqCqHvKo3w)
+#### Description:
+cooked is a Flask based web application that shows you recipes with your inputs. It uses the Spoonacular API ([Spoonacular](https://spoonacular.com/food-api)), and uses some of its functionalities like [Searching with Nutrition](https://spoonacular.com/food-api/docs#Search-Recipes-by-Nutrients) and [Searching with Ingredients](https://spoonacular.com/food-api/docs#Search-Recipes-by-Ingredients) that do just about that.
+
+## Searching with Ingredients
+This functionality of cooked lets the user search ingredients onto a search bar, select them from the search predictions, and search for recipes that use those ingredients. The search results show those recipes, and also show what ingredients from the input match with the ones that were input, and also show the missing ingredients that the user could probably try finding. The vision of this functionality was for users to decide on recipes with the ingredients lying around in their kitchens or pantries to probably minimise food wastage.
+
+## Searching with Nutrition
+Here, the user can select or deselect checkboxes for four different categories of nutrients, namely-- Calories, Proteins, Fats and Carbohydrates. At least one category has to be selected. Once selected, a slider is visually unlocked on the page that lets you move around a slider to set the specific nutrient around your desired nutrient intake. The web application, then, displays recipes with nutrients around the inputs. Since finding recipes with the exact same intake as the input would be too harsh of a constraint, I have chosen to add the tolerance of ten. So, for example the intake for Proteins was 25g, the recipes displayed are the recipes with quantity of Proteins ranging from 15g to 35g. This was intended to be used as a meal planner of some sort, where users could have recipes displayed for themselves for their specific dietary restrictions.
