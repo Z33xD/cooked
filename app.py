@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import json
 import requests
+import os
 
 
 # Configure Application
@@ -8,7 +9,7 @@ app = Flask(__name__)
 
 
 # API Key for Spoonacular
-SPOONACULAR_API_KEY = "97188f224df9474d8f99adb82cf9c8dd"
+SPOONACULAR_API_KEY = "b7d6f7bf16ab4deb8ea6120e727c3f6f"
 
 
 @app.route('/')
@@ -56,40 +57,26 @@ def search_ingredients():
 
 
 # Function to fetch recipes based on user-selected nutrition filters
-def get_recipes_based_on_nutrition(filters, tolerance=10):
+def get_recipes_based_on_nutrition(filters):
     url = "https://api.spoonacular.com/recipes/findByNutrients"
-
     params = {
-        "apiKey": SPOONACULAR_API_KEY,
-        "number": 20  # Fetch 20 recipes
+        "apiKey": SPOONACULAR_API_KEY,  # Ensure this is set
+        "number": 5
     }
 
-    if "calories" in filters:
-        params["minCalories"] = max(0, filters["calories"] - tolerance)
-        params["maxCalories"] = filters["calories"] + tolerance
     if "protein" in filters:
-        params["minProtein"] = max(0, filters["protein"] - tolerance)
-        params["maxProtein"] = filters["protein"] + tolerance
-    if "fat" in filters:
-        params["minFat"] = max(0, filters["fat"] - tolerance)
-        params["maxFat"] = filters["fat"] + tolerance
-    if "carbs" in filters:
-        params["minCarbs"] = max(0, filters["carbs"] - tolerance)
-        params["maxCarbs"] = filters["carbs"] + tolerance
+        params["minProtein"] = filters["protein"] - 5
+        params["maxProtein"] = filters["protein"] + 5
 
-    # Debugging
-    print("Requesting recipes with parameters:", params)
-    print("Full API Response:", json.dumps(response.json(), indent=4))
+    print("API Request Params:", params)
 
     response = requests.get(url, params=params)
 
-    if response.status_code == 200:
-        data = response.json()
-        print("Raw API Response:", data)  # Debugging: See what Spoonacular returns
-        return data
-    else:
-        print("Error fetching data:", response.status_code, response.text)
-        return []
+    if response.status_code != 200:
+        print("API Error:", response.status_code, response.text)
+        return []  # Don't break the app
+
+    return response.json()
 
 
 @app.route("/search_nutrition", methods=["GET", "POST"])
