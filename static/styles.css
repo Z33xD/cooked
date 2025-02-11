@@ -356,6 +356,8 @@ input[type="range"]
 {
     width: 100%;
     accent-color: #007bff;
+    margin-top: 5px;
+    margin-bottom: 20px;
 }
 
 input[type="range"]:disabled {
@@ -396,4 +398,41 @@ span
 .white-text
 {
     color: white !important;
+}
+
+label
+{
+    color: white;
+    font-weight: bold;
+}
+
+input[type="checkbox"] + label
+{
+    color: white;
+}
+
+.slider-group
+{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+button[type="submit"]
+{
+    background-color: #ff5733;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover
+{
+    background-color: #e64a2e;
 }

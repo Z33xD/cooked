@@ -21,41 +21,41 @@
             <div class="position-relative">
                 <!-- Use POST to send selected ingredients -->
                 <form action="/search_nutrition" method="POST" id="nutrition-search-form">
-                    <div>
+                    <div class="slider-group">
                         <label>
                             <input type="checkbox" name="calories_enabled" id="calories_enabled"> Enable Calories
                         </label>
                         <input type="range" name="calories" id="calories" min="0" max="1000" step="10" value="500" disabled>
-                        <span id="calories_value">500</span> kcal
+                        <span id="calories_value">out of 1000 kcal</span>
                     </div>
                 
-                    <div>
+                    <div class="slider-group">
                         <label>
                             <input type="checkbox" name="protein_enabled" id="protein_enabled"> Enable Protein
                         </label>
                         <input type="range" name="protein" id="protein" min="0" max="100" step="1" value="50" disabled>
-                        <span id="protein_value">50</span> g
+                        <span id="protein_value">out of 100g</span>
                     </div>
                 
-                    <div>
+                    <div class="slider-group">
                         <label>
                             <input type="checkbox" name="fat_enabled" id="fat_enabled"> Enable Fat
                         </label>
                         <input type="range" name="fat" id="fat" min="0" max="100" step="1" value="50" disabled>
-                        <span id="fat_value">50</span> g
+                        <span id="fat_value">out of 100g</span>
                     </div>
                 
-                    <div>
+                    <div class="slider-group">
                         <label>
                             <input type="checkbox" name="carbs_enabled" id="carbs_enabled"> Enable Carbs
                         </label>
                         <input type="range" name="carbs" id="carbs" min="0" max="100" step="1" value="50" disabled>
-                        <span id="carbs_value">50</span> g
+                        <span id="carbs_value">out of 100g</span>
                     </div>
                 
                     <button type="submit">Search</button>
                 </form>
-                    
+
                 <!-- Ingredient search suggestions -->
                 <ul id="suggestions" class="list-group position-absolute w-100" style="z-index: 1000; display: none;"></ul>
             </div>
@@ -64,7 +64,4 @@
             <div id="selected-ingredients" class="mt-3 d-flex flex-wrap"></div>
         </div>
     </section>
-{% endblock %}  <!-- Missing endblock for content -->
-
-{% block scripts %}
-{% endblock %}  <!-- Missing endblock for scripts -->
+{% endblock %}

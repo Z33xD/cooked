@@ -1,24 +1,26 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
+import json
 import requests
+
 
 # Configure Application
 app = Flask(__name__)
 
+
 # API Key for Spoonacular
 SPOONACULAR_API_KEY = "97188f224df9474d8f99adb82cf9c8dd"
+
 
 @app.route('/')
 @app.route('/home')
 def home():
     return render_template('index.html')
 
+
 @app.route('/search_with_ingredients')
 def search_with_ingredients():
     return render_template('search_with_ingredients.html')
 
-@app.route('/meal_planner')
-def meal_planner():
-    return render_template('meal_planner.html')
 
 @app.route('/search_ingredients', methods=['POST'])
 def search_ingredients():
@@ -49,6 +51,7 @@ def search_ingredients():
 
     return render_template("search_results.html", recipes=processed_recipes)
 
+
 # Function to fetch recipes based on user-selected nutrition filters
 def get_recipes_based_on_nutrition(filters, tolerance=10):
     url = "https://api.spoonacular.com/recipes/findByNutrients"
@@ -71,7 +74,9 @@ def get_recipes_based_on_nutrition(filters, tolerance=10):
         params["minCarbs"] = max(0, filters["carbs"] - tolerance)
         params["maxCarbs"] = filters["carbs"] + tolerance
 
+    # Debugging
     print("Requesting recipes with parameters:", params)
+    print("Full API Response:", json.dumps(response.json(), indent=4))
 
     response = requests.get(url, params=params)
 
@@ -111,6 +116,7 @@ def search_nutrition():
 
     return render_template("search_with_nutrition.html")
 
+
 # Route to fetch and display search results
 @app.route('/search-results')
 def search_results():
@@ -124,6 +130,7 @@ def search_results():
     recipes = response.json()
 
     return render_template("search_results.html", recipes=recipes, ingredients=ingredients)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
