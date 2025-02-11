@@ -16,8 +16,8 @@
 
                         <!-- Searching with Ingredients -->
                         {% if recipe.matched_ingredients is defined or recipe.missing_ingredients is defined %}
-                            <p style="color: white;"><strong>Matched Ingredients:</strong> 
-                                {% if recipe.matched_ingredients and recipe.matched_ingredients[0] != "None" %}
+                            <p style="color: white;"><strong>Matched Ingredients:</strong>  
+                                {% if recipe.matched_ingredients %}
                                     {% for ingredient in recipe.matched_ingredients %}
                                         <span class="badge bg-success">{{ ingredient }}</span>
                                     {% endfor %}
@@ -25,15 +25,16 @@
                                     <span class="text-muted">None</span>
                                 {% endif %}
                             </p>
-                            <p style="color: white;"><strong>Missing Ingredients:</strong> 
-                                {% if recipe.missing_ingredients and recipe.missing_ingredients[0] != "None" %}
+                            
+                            <p style="color: white;"><strong>Missing Ingredients:</strong>  
+                                {% if recipe.missing_ingredients %}
                                     {% for ingredient in recipe.missing_ingredients %}
                                         <span class="badge bg-danger">{{ ingredient }}</span>
                                     {% endfor %}
                                 {% else %}
                                     <span class="text-muted">None</span>
                                 {% endif %}
-                            </p>
+                            </p>                        
                         {% endif %}
 
                         <!-- Searching with Nutrition -->

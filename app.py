@@ -27,27 +27,30 @@ def search_ingredients():
     user_ingredients = request.form.get("ingredients")  # Get ingredients from the hidden input
     user_ingredient_list = [ing.strip().lower() for ing in user_ingredients.split(",")]
 
-    # Fetch recipes from spoonacular
+    # Fetch recipes from Spoonacular
     response = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={user_ingredients}&number=5&apiKey={SPOONACULAR_API_KEY}")
 
     if response.status_code != 200:
         return jsonify({"error": "Failed to fetch recipes"}), 500
-    
+
     recipes = response.json()
 
     processed_recipes = []
     for recipe in recipes:
-        recipe_ingredients = [ing["name"].lower() for ing in recipe["missedIngredients"] + recipe["usedIngredients"]]
-
-        matched = [ing for ing in recipe_ingredients if ing in user_ingredient_list]
-        missing = [ing for ing in recipe_ingredients if ing not in user_ingredient_list]
+        matched = [ing["name"].capitalize() for ing in recipe.get("usedIngredients", [])]  # Capitalize for better display
+        missing = [ing["name"].capitalize() for ing in recipe.get("missedIngredients", [])]
 
         processed_recipes.append({
             "title": recipe["title"],
             "image": recipe["image"],
-            "matched_ingredients": matched,
-            "missing_ingredients": missing
+            "matched_ingredients": matched if matched else None,
+            "missing_ingredients": missing if missing else None
         })
+
+        # Debugging
+        print(f"Recipe: {recipe['title']}")
+        print(f"Matched Ingredients: {matched}")
+        print(f"Missing Ingredients: {missing}")
 
     return render_template("search_results.html", recipes=processed_recipes)
 
@@ -110,8 +113,8 @@ def search_nutrition():
 
         if not filters:
             return render_template("search_results.html", recipes=[])
-
         recipes = get_recipes_based_on_nutrition(filters)
+
         return render_template("search_results.html", recipes=recipes)
 
     return render_template("search_with_nutrition.html")
