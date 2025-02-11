@@ -3,55 +3,55 @@
 {% block title %}Recipe Results{% endblock %}
 
 {% block content %}
-    <section class="container mt-5">
-        <h3 class="recipe-results-header">Recipe Results</h3>
+<section class="container mt-5">
+    <h3 class="recipe-results-header">Recipe Results</h3>
 
-        <div class="row">
-            {% for recipe in recipes %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recipe.title }}</h5>
+    <div class="row">
+        {% for recipe in recipes %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.title }}</h5>
 
-                        <!-- Searching with Ingredients -->
-                        {% if recipe.matched_ingredients is defined or recipe.missing_ingredients is defined %}
-                            <p style="color: white;"><strong>Matched Ingredients:</strong>  
-                                {% if recipe.matched_ingredients %}
-                                    {% for ingredient in recipe.matched_ingredients %}
-                                        <span class="badge bg-success">{{ ingredient }}</span>
-                                    {% endfor %}
-                                {% else %}
-                                    <span class="text-muted">None</span>
-                                {% endif %}
-                            </p>
-                            
-                            <p style="color: white;"><strong>Missing Ingredients:</strong>  
-                                {% if recipe.missing_ingredients %}
-                                    {% for ingredient in recipe.missing_ingredients %}
-                                        <span class="badge bg-danger">{{ ingredient }}</span>
-                                    {% endfor %}
-                                {% else %}
-                                    <span class="text-muted">None</span>
-                                {% endif %}
-                            </p>                        
+                    <!-- Searching with Ingredients -->
+                    {% if recipe.usedIngredients or recipe.missedIngredients %}
+                    <p style="color: white;"><strong>Matched Ingredients:</strong>  
+                        {% if recipe.usedIngredients %}
+                            {% for ingredient in recipe.usedIngredients %}
+                                <span class="badge bg-success">{{ ingredient['name'] }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">None</span>
                         {% endif %}
-
-                        <!-- Searching with Nutrition -->
-                        {% if recipe.calories is defined or recipe.protein is defined or recipe.fat is defined or recipe.carbs is defined %}
-                            <p style="color: white;"><strong>Nutrition Info:</strong></p>
-                            <ul style="color: white;">
-                                {% if recipe.calories is defined %}<li>Calories: {{ recipe.calories }} kcal</li>{% endif %}
-                                {% if recipe.protein is defined %}<li>Protein: {{ recipe.protein }}</li>{% endif %}
-                                {% if recipe.fat is defined %}<li>Fat: {{ recipe.fat }}</li>{% endif %}
-                                {% if recipe.carbs is defined %}<li>Carbs: {{ recipe.carbs }}</li>{% endif %}
-                            </ul>
+                    </p>
+                    
+                    <p style="color: white;"><strong>Missing Ingredients:</strong>  
+                        {% if recipe.missedIngredients %}
+                            {% for ingredient in recipe.missedIngredients %}
+                                <span class="badge bg-danger">{{ ingredient['name'] }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">None</span>
                         {% endif %}
+                    </p>                        
+                    {% endif %}
+                                    
+                    <!-- Searching with Nutrition -->
+                    {% if recipe.calories is defined or recipe.protein is defined or recipe.fat is defined or recipe.carbs is defined %}
+                        <p style="color: white;"><strong>Nutrition Info:</strong></p>
+                        <ul style="color: white;">
+                            {% if recipe.calories is defined %}<li>Calories: {{ recipe.calories }} kcal</li>{% endif %}
+                            {% if recipe.protein is defined %}<li>Protein: {{ recipe.protein }}</li>{% endif %}
+                            {% if recipe.fat is defined %}<li>Fat: {{ recipe.fat }}</li>{% endif %}
+                            {% if recipe.carbs is defined %}<li>Carbs: {{ recipe.carbs }}</li>{% endif %}
+                        </ul>
+                    {% endif %}
 
-                    </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </section>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}

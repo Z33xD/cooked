@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 from flask import Flask, request, jsonify, render_template, url_for, redirect
 
@@ -24,6 +25,37 @@ def search_with_ingredients():
     return render_template('search_with_ingredients.html')
 
 
+# Function to fetch recipes based on user-selected ingredients
+def get_recipes_based_on_ingredients(ingredients):
+    api_url = "https://api.spoonacular.com/recipes/findByIngredients"
+    params = {
+        "apiKey": os.getenv("SPOONACULAR_API_KEY"),
+        "ingredients": ",".join(ingredients),
+        "number": 5,
+        "ranking": 1,  # Prioritize recipes with more matched ingredients
+        "ignorePantry": True
+    }
+
+    print("Requesting recipes with ingredients:", params)  # Debugging
+
+    try:
+        response = requests.get(api_url, params=params)
+        response.raise_for_status()
+        recipes = response.json()
+
+        # Ensure usedIngredients and missedIngredients are included
+        for recipe in recipes:
+            recipe["usedIngredients"] = recipe.get("usedIngredients", [])
+            recipe["missedIngredients"] = recipe.get("missedIngredients", [])
+
+        print("API Response:", recipes)  # Debugging
+        return recipes
+
+    except requests.exceptions.RequestException as e:
+        print("API Request Failed:", e)
+        return []
+
+
 @app.route('/search_ingredients', methods=['POST'])
 def search_ingredients():
     user_ingredients = request.form.get("ingredients")  
@@ -41,27 +73,47 @@ def search_ingredients():
 
     return render_template("search_results.html", recipes=recipes)
 
+
 # Function to fetch recipes based on user-selected nutrition filters
 def get_recipes_based_on_nutrition(filters):
-    url = "https://api.spoonacular.com/recipes/findByNutrients"
+    api_url = "https://api.spoonacular.com/recipes/complexSearch"
     params = {
-        "apiKey": SPOONACULAR_API_KEY,  # Ensure this is set
-        "number": 5
+        "apiKey": os.getenv("SPOONACULAR_API_KEY"),
+        "number": 5,
+        "addRecipeNutrition": True  # Ensures nutrition info is included
     }
 
-    if "protein" in filters:
-        params["minProtein"] = filters["protein"] - 5
-        params["maxProtein"] = filters["protein"] + 5
+    # Add the filter constraints to API request
+    for nutrient, value in filters.items():
+        params[f"min{nutrient.capitalize()}"] = max(value - 10, 0)  # Lower bound
+        params[f"max{nutrient.capitalize()}"] = value + 10  # Upper bound
 
-    print("API Request Params:", params)
+    print("Requesting recipes with nutrition filters:", params)  # Debugging
 
-    response = requests.get(url, params=params)
+    try:
+        response = requests.get(api_url, params=params)
+        response.raise_for_status()
+        data = response.json()
 
-    if response.status_code != 200:
-        print("API Error:", response.status_code, response.text)
-        return []  # Don't break the app
+        recipes = []
+        for recipe in data.get("results", []):
+            nutrition = {nutrient["name"].lower(): nutrient["amount"] for nutrient in recipe.get("nutrition", {}).get("nutrients", [])}
 
-    return response.json()
+            recipes.append({
+                "title": recipe["title"],
+                "image": recipe["image"],
+                "calories": nutrition.get("calories", "N/A"),
+                "protein": nutrition.get("protein", "N/A"),
+                "fat": nutrition.get("fat", "N/A"),
+                "carbs": nutrition.get("carbohydrates", "N/A")
+            })
+
+        print("API Response:", recipes)  # Debugging
+        return recipes
+
+    except requests.exceptions.RequestException as e:
+        print("API Request Failed:", e)
+        return []
 
 
 @app.route("/search_nutrition", methods=["GET", "POST"])
@@ -90,7 +142,6 @@ def search_nutrition():
         return render_template("search_results.html", recipes=recipes)
 
     return render_template("search_with_nutrition.html")
-
 
 # Route to fetch and display search results
 @app.route('/search-results')
