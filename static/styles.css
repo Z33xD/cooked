@@ -22,7 +22,7 @@ main
 
 .navbar
 {
-    background-color: #739E82;
+    background-color: #84A66D;
     height: 60px;
     margin: 20px;
     border-radius: 16px;
@@ -44,14 +44,14 @@ main
 
 .navbar-brand:hover
 {
-    color: black !important;
+    color: #222222 !important;
     transition: 0.3s color;
 }
 
 .contact-button
 {
     background-color: #2C5530;
-    color: white;
+    color: #FAF3E0;
     font-size: 14px;
     padding: 8px 20px;
     border-radius: 50px;
@@ -78,14 +78,14 @@ main
 
 .nav-link
 {
-    color: #6666;
+    color: #222222;
     font-weight: 500;
     position: relative;
 }
 
 .nav-link:hover, .nav-link.active
 {
-    color: black;
+    color: #222222;
 }
 
 
@@ -134,7 +134,7 @@ main
 .hero-section::before, .how-it-works::before, .subpage-header::before
 {
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
     content: "";
     position: absolute;
     top: 0;
@@ -150,12 +150,12 @@ main
 {
     position: relative;
     z-index: 1;
-    color: white;
+    color: #FAF3E0;
 }
 
 .hero-title
 {
-    color: white;
+    color: #FAF3E0;
     margin-bottom: 1rem;
     font-size: 3rem;
     z-index: 1;
@@ -163,7 +163,7 @@ main
 
 .hero-text
 {
-    color: white;
+    color: #FAF3E0;
     font-size: 1.2rem;
     z-index: 1;
 }
@@ -171,7 +171,7 @@ main
 .page-title
 {
     font-size: 2.5rem;
-    color: white;
+    color: #FAF3E0;
     width: 100%;
     display: flex;
     align-items: left;
@@ -183,7 +183,7 @@ main
 
 .page-text
 {
-    color: white;
+    color: #FAF3E0;
     width: 100%;
     display: flex;
     align-items: left;
@@ -204,23 +204,23 @@ main
 {
     background-color: rgba(255, 255, 255, 0.1) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
-    color: white !important;
+    color: #FAF3E0 !important;
 }
 
 .card-title, .card-text
 {
-    color: white !important;
+    color: #FAF3E0 !important;
 }
 
-.btn-primary
+.btn-primary, .try-it-out
 {
-    background-color: #2C5530;
-    border: none;
+    background-color: #2C5530 !important;
+    border: none !important;
 }
 
-.btn-primary:hover
+.btn-primary:hover, .try-it-out:hover
 {
-    background-color: #1C361E;
+    background-color: #1C361E !important;
 }
 
 .section-title
@@ -236,8 +236,8 @@ main
 
 .footer-styling 
 {
-    background-color: #739E82;
-    color: white;
+    background-color: #84A66D;
+    color: #FAF3E0;
     text-align: center;
     width: 100%;
     margin: 0;
@@ -265,7 +265,7 @@ img
 {
     display: inline-block;
     align-items: center;
-    color: white;
+    color: #FAF3E0;
     padding: 6px 12px;
     border-radius: 20px;
     margin: 5px;
@@ -276,7 +276,7 @@ img
 .ingredient-bubble
 {
     margin-left: 8px;
-    color: white;
+    color: #FAF3E0;
     cursor: pointer;
 }
 
@@ -284,14 +284,14 @@ img
 {
     cursor: pointer;
     pointer-events: auto;
-    color: white;
+    color: #FAF3E0;
     margin-left: 8px;
 }
 
 #suggestions
 {
     position: absolute;
-    background: white;
+    background: #FAF3E0;
     border: 1px solid #ccc;
     list-style-type: none;
     padding: 0;
@@ -329,24 +329,24 @@ img
 
 .badge.bg-success 
 {
-    background-color: #28a745;
-    color: white;
+    background-color: #A1C181 !important;
+    color: #222222;
 }
 
 .badge.bg.danger
 {
-    background-color: #dc3545;
-    color: white;
+    background-color: #b03d40 !important;
+    color: #FAF3E0;
 }
 
 .white-text
 {
-    color: white
+    color: #FAF3E0
 }
 
 .recipe-results-header
 {
-    color: black;
+    color: #222222;
     margin-top: 70px; 
     padding: 20px;
     font-weight: 750; 
@@ -355,9 +355,14 @@ img
 input[type="range"] 
 {
     width: 100%;
-    accent-color: #007bff;
+    accent-color: #678b59;
     margin-top: 5px;
     margin-bottom: 20px;
+}
+
+input[type="checkbox"]
+{
+    accent-color: #678b59;
 }
 
 input[type="range"]:disabled {
@@ -390,25 +395,25 @@ input[type="checkbox"]
 span
 {
     font-weight: bold;
-    color: white;
+    color: #FAF3E0;
     margin-top: 5px;
     margin-bottom: 20px;
 }
 
 .white-text
 {
-    color: white !important;
+    color: #FAF3E0 !important;
 }
 
 label
 {
-    color: white;
+    color: #FAF3E0;
     font-weight: bold;
 }
 
 input[type="checkbox"] + label
 {
-    color: white;
+    color: #FAF3E0;
 }
 
 .slider-group
@@ -421,8 +426,8 @@ input[type="checkbox"] + label
 
 button[type="submit"]
 {
-    background-color: #ff5733;
-    color: white;
+    background-color: #678b59;
+    color: #FAF3E0;
     font-size: 18px;
     font-weight: bold;
     padding: 10px 20px;
@@ -434,5 +439,5 @@ button[type="submit"]
 
 button[type="submit"]:hover
 {
-    background-color: #e64a2e;
+    background-color: #2C5530;
 }
