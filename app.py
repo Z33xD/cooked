@@ -49,31 +49,66 @@ def search_ingredients():
 
     return render_template("search_results.html", recipes=processed_recipes)
 
-@app.route('/search_nutrition', methods=['GET', 'POST'])
+# Function to fetch recipes based on user-selected nutrition filters
+def get_recipes_based_on_nutrition(filters, tolerance=10):
+    url = "https://api.spoonacular.com/recipes/findByNutrients"
+
+    params = {
+        "apiKey": SPOONACULAR_API_KEY,
+        "number": 20  # Fetch 20 recipes
+    }
+
+    if "calories" in filters:
+        params["minCalories"] = max(0, filters["calories"] - tolerance)
+        params["maxCalories"] = filters["calories"] + tolerance
+    if "protein" in filters:
+        params["minProtein"] = max(0, filters["protein"] - tolerance)
+        params["maxProtein"] = filters["protein"] + tolerance
+    if "fat" in filters:
+        params["minFat"] = max(0, filters["fat"] - tolerance)
+        params["maxFat"] = filters["fat"] + tolerance
+    if "carbs" in filters:
+        params["minCarbs"] = max(0, filters["carbs"] - tolerance)
+        params["maxCarbs"] = filters["carbs"] + tolerance
+
+    print("Requesting recipes with parameters:", params)
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        print("Raw API Response:", data)  # Debugging: See what Spoonacular returns
+        return data
+    else:
+        print("Error fetching data:", response.status_code, response.text)
+        return []
+
+
+@app.route("/search_nutrition", methods=["GET", "POST"])
 def search_nutrition():
-    if request.method == 'POST':
-        # Extract user-selected filters
-        nutrition_filters = {}
-        if "calories" in request.form: nutrition_filters["maxCalories"] = request.form["calories"]
-        if "protein" in request.form: nutrition_filters["maxProtein"] = request.form["protein"]
-        if "fat" in request.form: nutrition_filters["maxFat"] = request.form["fat"]
-        if "carbs" in request.form: nutrition_filters["maxCarbs"] = request.form["carbs"]
+    if request.method == "POST":
+        print("Raw Form Data:", request.form)  # Debugging
 
-        # Spoonacular API Endpoint
-        url = "https://api.spoonacular.com/recipes/findByNutrients"
-        
-        # Add API Key
-        nutrition_filters["apiKey"] = SPOONACULAR_API_KEY
-        
-        # Send request to Spoonacular
-        response = requests.get(url, params=nutrition_filters)
-        data = response.json()  # Parse JSON response
+        filters = {}
+        tolerance = 10  # +/-10 range
 
-        # Debugging: Print API response
-        print("Spoonacular Response:", data)
+        if "calories" in request.form and "calories_enabled" in request.form:
+            filters["calories"] = int(request.form["calories"])
+        if "protein" in request.form and "protein_enabled" in request.form:
+            filters["protein"] = int(request.form["protein"])
+        if "fat" in request.form and "fat_enabled" in request.form:
+            filters["fat"] = int(request.form["fat"])
+        if "carbs" in request.form and "carbs_enabled" in request.form:
+            filters["carbs"] = int(request.form["carbs"])
 
-        return render_template("search_results.html", recipes=data)
-    # If GET request, render the search page
+        print("Filters applied:", filters)  # Debugging
+
+        if not filters:
+            return render_template("search_results.html", recipes=[])
+
+        recipes = get_recipes_based_on_nutrition(filters)
+        return render_template("search_results.html", recipes=recipes)
+
     return render_template("search_with_nutrition.html")
 
 # Route to fetch and display search results
